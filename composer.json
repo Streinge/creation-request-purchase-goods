@@ -1,0 +1,17 @@
+{
+    "name": "streinge/creation-request-purchase-goods",
+    "autoload": {
+        "psr-4": {
+            "Streinge\\CreationRequestPurchaseGoods\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oleg Sofonov",
+            "email": "olesof@mail.ru"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.29"
+    }
+}
