@@ -27,7 +27,7 @@ foreach ($checkedGoodsSheet->getRowIterator() as $row) {
     $dataCheckedGoods[] = $rowData;
 }
 
-$remantsWhFilePath = '../files/warehouseRemnants_08_01_2025.xlsx';
+$remantsWhFilePath = '../files/warehouseRemnants_09_01_2025.xlsx';
 $remantsWhSpreadSheet = IOFactory::load($remantsWhFilePath);
 $remantsWhSheet = $remantsWhSpreadSheet->getActiveSheet();
 
@@ -41,7 +41,7 @@ foreach ($remantsWhSheet->getRowIterator() as $row) {
     $i = 0;
     foreach ($cellIterator as $cell) {
         if ($i === 0) {
-            $ozm = $cell->getValue();
+            $ozm = (string) ($cell->getValue());
         }
 
         if ($i < count($keys)) {
@@ -59,9 +59,11 @@ foreach ($remantsWhSheet->getRowIterator() as $row) {
     $dataRemantsWh[$ozm] = $rowData;
 }
 
+
+
 $purchaseRequest[] = ['ОЗМ', 'Наименование', 'Объем закупки', 'Единицы измерения', 'Остаток'];
 foreach ($dataCheckedGoods as $checkedGood) {
-    $ozm = $checkedGood['ozm'];
+    $ozm = (string) $checkedGood['ozm'];
     $purchaseVolume = $checkedGood['purchaseVolume'];
     $name = $checkedGood['name'];
     $unit = $checkedGood['unit'];
@@ -70,9 +72,10 @@ foreach ($dataCheckedGoods as $checkedGood) {
     }
 
     if (isset($dataRemantsWh[$ozm])) {
-        $name = $dataRemantsWh[$ozm]['name'];
-        $unit = $dataRemantsWh[$ozm]['unit'];
+        $name = $dataRemantsWh[$ozm]['name'] ?? '';
+        $unit = $dataRemantsWh[$ozm]['unit'] ?? '';
     }
+
     $purchaseRequest[] = [
         'ozm' => $ozm,
         'name' => $name,
@@ -80,7 +83,6 @@ foreach ($dataCheckedGoods as $checkedGood) {
         'unit' => $unit,
         'remantWh' => $dataRemantsWh[$ozm]['remant'] ?? '0'
     ];
-
 }
 
 $spreadsheet = new Spreadsheet();
@@ -92,5 +94,6 @@ foreach ($purchaseRequest as $rowIndex => $row) {
     }
 }
 
+
 $writer = new Xlsx($spreadsheet);
-$writer->save('../files/purchaseRequest_08_01_2025.xlsx');
+$writer->save('../files/purchaseRequest_09_01_2025.xlsx');
